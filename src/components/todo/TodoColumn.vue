@@ -1,5 +1,5 @@
 <template>
-    <div class="column">
+    <div class="column" @click="$emit('getTask')">
         <span class="column-title">{{ title }}</span>
 
         <div class="tasks-wrapper">

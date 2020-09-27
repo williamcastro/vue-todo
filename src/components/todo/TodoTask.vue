@@ -1,5 +1,5 @@
 <template>
-    <div class="task" :class="{ active: active === true }" @click="$emit('setActive', task)">
+    <div class="task" :class="{ active: active === true }" @click="toggleCurrentTask()">
         <span>{{ task.title }}</span>
     </div>
 </template>
@@ -14,6 +14,15 @@
             active: {
                 type: Boolean,
                 default: false,
+            }
+        },
+
+        methods: {
+            toggleCurrentTask: function() {
+                if(!this.active)
+                    return this.$emit('setActive', this.task);
+
+                return this.$emit('setActive', null);
             }
         }
     }

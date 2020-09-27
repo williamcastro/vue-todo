@@ -5,7 +5,9 @@
 
         <!-- sweepy todo -->
         <div class="sweepy-todo">
-            <todo-column :title="status.title" v-for="status in columnStatus" :key="status.id">
+            <todo-column :title="status.title" v-for="status in columnStatus"
+                         :key="status.id"
+                         @getTask="getCurrentTask(status.id)">
                 <todo-task v-for="task in filterStatus(status.id)"
                            @setActive="setActive"
                            :active="isActive(task)"
@@ -84,12 +86,7 @@
                     })
             },
 
-            updateStatus: function (task, newStatus) {
-                task.status = newStatus
-            },
-
             setActive: function (task) {
-              console.log(task);
                 this.active = task;
             },
 
@@ -100,6 +97,13 @@
                 }
 
                 return false;
+            },
+
+            getCurrentTask: function (statusId) {
+                console.log(statusId);
+                if (this.active) {
+                    this.active.status = statusId;
+                }
             }
         }
     }
