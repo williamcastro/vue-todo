@@ -1,28 +1,105 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div id="app">
+        <!-- component | navbar -->
+        <navbar/>
+
+        <!-- sweepy todo -->
+        <div class="sweepy-todo">
+            <todo-column :title="status.title" v-for="status in columnStatus" :key="status.id">
+                <todo-task v-for="task in filterStatus(status.id)"
+                           :task="task" :key="task.id"/>
+            </todo-column>
+        </div>
+
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+    import Navbar from "@/components/global/Navbar";
+    import TodoColumn from "@/components/todo/TodoColumn";
+    import TodoTask from "@/components/todo/TodoTask";
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+    export default {
+        name: 'App',
+        components: {TodoTask, TodoColumn, Navbar},
+
+        data() {
+            return {
+                columnStatus: [
+                    {
+                        id: 'backlog',
+                        title: 'Backlog',
+                    },
+                    {
+                        id: 'todo',
+                        title: 'To Do',
+                    },
+                    {
+                        id: 'doing',
+                        title: 'Doing',
+                    },
+                    {
+                        id: 'done',
+                        title: 'Done',
+                    },
+                ],
+                active: null,
+                tasks: [
+                    {
+                        'id': 1,
+                        'title': 'Jogar lol',
+                        'status': 'backlog'
+                    },
+                    {
+                        'id': 2,
+                        'title': 'estudar vuejs',
+                        'status': 'todo'
+                    },
+                    {
+                        'id': 3,
+                        'title': 'fazer freela',
+                        'status': 'todo'
+                    },
+                    {
+                        'id': 4,
+                        'title': 'dormir',
+                        'status': 'doing'
+                    },
+                    {
+                        'id': 5,
+                        'title': 'tomar banho',
+                        'status': 'done'
+                    }
+                ]
+            }
+        },
+
+        methods: {
+            filterStatus: function (status) {
+                return this.tasks.filter(
+                    (task) => {
+                        return task.status === status
+                    })
+            },
+
+            setActive: function (task) {
+                this.active = task;
+            },
+
+            updateStatus: function (task, newStatus) {
+                task.status = newStatus
+            }
+        }
+    }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+    @import "./assets/sass/styles.scss";
+
+    .sweepy-todo {
+        display: flex;
+        justify-content: flex-start;
+        margin: 15px;
+        align-items: flex-start;
+    }
 </style>
